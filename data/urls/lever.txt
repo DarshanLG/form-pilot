@@ -1,1 +1,11 @@
 # One Lever job URL per line, e.g. https://jobs.lever.co/<company>/<job-id>
+https://jobs.lever.co/palantir/6ed76ce8-4156-4b60-b120-403538bd66cd
+https://jobs.lever.co/spotify/223f9722-3579-4ff2-b123-e4cc7b0c1a64
+https://jobs.lever.co/zoox/e8a190f0-7a89-4c11-a6a0-452ff6234749
+https://jobs.lever.co/shieldai/ba945088-38ec-4e58-8f66-01c0497a3bd3
+https://jobs.lever.co/binance/8cd93838-3c12-4386-8dc2-8dfe69873e27
+https://jobs.lever.co/outreach/5becd4e1-3474-4f36-b5dd-4b2cd0eb1179
+https://jobs.lever.co/matchgroup/69396299-e587-4063-aef6-0ce2fd66e9ee
+https://jobs.lever.co/ro/3910baa9-f961-4380-ad0a-01deec07f7a2
+https://jobs.lever.co/jumpcloud/acb03da4-6d71-4ba0-ae3e-3dfb94d6b70c
+https://jobs.lever.co/hive/366ff84b-4572-4fed-b16b-d15397de79c8

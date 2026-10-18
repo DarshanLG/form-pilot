@@ -52,14 +52,20 @@ RULES: list[tuple[str, str, str]] = [
 
 # Fields where the right answer needs reasoning, not lookup -> CoT ablation subset.
 AMBIGUOUS_KEYS = {
-    "name.preferred", "answers.how_did_you_hear", "preferences.salary_expectation",
-    "work_authorization.needs_sponsorship", "work_authorization.authorized_us",
-    "preferences.relocate", "location.city",
+    "name.preferred",
+    "answers.how_did_you_hear",
+    "preferences.salary_expectation",
+    "work_authorization.needs_sponsorship",
+    "work_authorization.authorized_us",
+    "preferences.relocate",
+    "location.city",
 }
 
 
 def label_field(m: dict) -> dict:
-    text = " ".join([m.get("label", ""), m.get("name", ""), m.get("placeholder", "")]).lower()
+    text = " ".join(
+        [m.get("group", ""), m.get("label", ""), m.get("name", ""), m.get("placeholder", "")]
+    ).lower()
     key, action = None, None
     for pat, k, a in RULES:
         if re.search(pat, text):
@@ -94,9 +100,15 @@ def main() -> None:
             n_forms += 1
             for m in rec["marks"]:
                 row = {
-                    "form_id": rec["id"], "company": rec["company"], "platform": rec["platform"],
-                    "mark": m["mark"], "label": m["label"], "field_type": m["type"],
-                    "options": m["options"], "required": m["required"],
+                    "form_id": rec["id"],
+                    "company": rec["company"],
+                    "platform": rec["platform"],
+                    "mark": m["mark"],
+                    "label": m["label"],
+                    "group": m.get("group", ""),
+                    "field_type": m["type"],
+                    "options": m["options"],
+                    "required": m["required"],
                     **label_field(m),
                 }
                 n_fields += 1

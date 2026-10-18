@@ -1,2 +1,12 @@
 # One Greenhouse job URL per line, e.g. https://job-boards.greenhouse.io/<company>/jobs/<id>
 # Tip: open boards.greenhouse.io/<company> for companies you like and copy job links.
+https://job-boards.greenhouse.io/airbnb/jobs/8184174
+https://job-boards.greenhouse.io/stripe/jobs/8172510
+https://job-boards.greenhouse.io/figma/jobs/5426468004
+https://job-boards.greenhouse.io/discord/jobs/8806482002
+https://job-boards.greenhouse.io/databricks/jobs/8805655002
+https://job-boards.greenhouse.io/robinhood/jobs/6669758
+https://job-boards.greenhouse.io/duolingo/jobs/8851677002
+https://job-boards.greenhouse.io/cloudflare/jobs/7695702
+https://job-boards.greenhouse.io/gitlab/jobs/8860302002
+https://job-boards.greenhouse.io/asana/jobs/8165477

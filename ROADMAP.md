@@ -18,6 +18,7 @@ Target resume claims — **only keep a number once the eval in Phase 4/5 produce
 - [x] `crawler/capture.py` — screenshot + numbered marks (set-of-marks) + field metadata per form
 - [x] `crawler/autolabel.py` — silver labels: mark → profile key → action
 - [ ] Collect URLs: ~150 Greenhouse, ~150 Lever, ~50 Workday (`data/urls/*.txt`)
+  - `crawler/collect_urls.py` pulls from the public board APIs. Pilot: 10 GH + 10 Lever, 1 job/company, all 20 capture (585 fields).
 - [ ] Run capture on all; handle multi-page Workday (capture each step)
 - [ ] Hand-review ~10% of labels in a tiny review UI (or a notebook)
 - **Done when:** ≥300 forms, ≥5k labeled fields in `data/samples.jsonl`
