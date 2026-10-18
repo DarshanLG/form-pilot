@@ -1,0 +1,2 @@
+# One Workday job URL per line, e.g. https://<tenant>.wd5.myworkdayjobs.com/<site>/job/<...>
+# Workday usually requires sign-in before the form. Capture these in --headed mode, signed in manually.

@@ -1,0 +1,2 @@
+# One Greenhouse job URL per line, e.g. https://job-boards.greenhouse.io/<company>/jobs/<id>
+# Tip: open boards.greenhouse.io/<company> for companies you like and copy job links.

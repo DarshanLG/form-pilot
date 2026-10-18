@@ -1,0 +1,1 @@
+# One Lever job URL per line, e.g. https://jobs.lever.co/<company>/<job-id>

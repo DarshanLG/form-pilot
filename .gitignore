@@ -1,0 +1,9 @@
+data/*
+!data/urls/
+!data/profile.example.json
+__pycache__/
+.venv/
+node_modules/
+*.safetensors
+checkpoints/
+.env
