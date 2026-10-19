@@ -25,14 +25,16 @@ Target resume claims — **only keep a number once the eval in Phase 4/5 produce
 - **Done when:** ≥300 forms, ≥5k labeled fields in `data/samples.jsonl`
 
 ## Phase 2 — Dataset build (Week 2)
-- [ ] `ml/build_dataset.py` — one example per field: (screenshot crop/full + marks, profile JSON, history) → target action JSON
-- [ ] Split **by company domain**, not random: train 70 / val 10 / test 20
-- [ ] Tag "ambiguous" fields (no direct profile key, free-text, "how did you hear", demographic, custom questions) → `ambiguous: true`
-- [ ] Two target formats: `with_cot` (`thought` before action) and `no_cot`
-- **Done when:** frozen test split + dataset card (counts per platform, % ambiguous)
+- [x] `ml/build_dataset.py` — one example per field: (screenshot crop/full + marks, profile JSON, history) → target action JSON
+  - 900px crop around each mark, 50 synthetic profiles (never the real one), + one `done` per form. Prompt format in `ml/prompt.py`.
+- [x] Split **by company domain**, not random: train 70 / val 10 / test 20 (stratified by platform, frozen in `ml/split.json`)
+- [x] Tag "ambiguous" fields (no direct profile key, free-text, "how did you hear", demographic, custom questions) → `ambiguous: true`
+- [x] Two target formats: `with_cot` (`thought` before action) and `no_cot` (thoughts are templated, not human-written)
+- **Done when:** frozen test split + dataset card (counts per platform, % ambiguous) → `ml/DATASET.md`
 
 ## Phase 3 — Baseline (Week 2)
-- [ ] `ml/eval.py` — action accuracy = action type + mark + value all correct (value: normalized exact match; free text: judged separately)
+- [x] `ml/eval.py` — action accuracy = action type + mark + value all correct (value: normalized exact match; free text: judged separately)
+  - Reference: `always-skip` (no model) scores 44.2% overall / 63.2% ambiguous; every model must beat it. `--prefill` starts answers with `{"action": "`.
 - [ ] Zero-shot SmolVLM baseline on test split → record in `ml/RESULTS.md`
 
 ## Phase 4 — LoRA fine-tune (Week 3)
