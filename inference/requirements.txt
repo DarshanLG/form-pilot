@@ -1,0 +1,3 @@
+# Plus everything in ml/requirements.txt (torch, transformers, peft).
+fastapi>=0.115
+uvicorn>=0.30

@@ -39,15 +39,20 @@ Target resume claims — **only keep a number once the eval in Phase 4/5 produce
 
 ## Phase 4 — LoRA fine-tune (Week 3)
 - [ ] `ml/train_lora.py` (PEFT + TRL SFT), r=16, target attn+MLP proj, bf16
+  - Written; label masking verified (loss only on the answer JSON). fp32 on the GTX 1050 Ti (no bf16 on Pascal). Not yet run.
 - [ ] Train `no_cot` → eval on held-out layouts
 - [ ] Train `with_cot` → eval; report delta on `ambiguous` subset
 - [ ] Push adapter to Hugging Face Hub
 - **Done when:** RESULTS.md has baseline vs LoRA vs LoRA+CoT, overall + per platform + ambiguous
 
 ## Phase 5 — Inference service (Week 4)
-- [ ] `inference/` FastAPI: `POST /act` {screenshot, marks, profile, history} → action JSON
-- [ ] JSON-schema-constrained decoding / retry on invalid output
+- [x] `inference/` FastAPI: `POST /act` {screenshot, marks, profile, history} → action JSON
+  - `uvicorn inference.server:app --host 127.0.0.1 --port 8000`; `FORMPILOT_ADAPTER` loads a LoRA. Tests: `pytest inference`.
+- [x] JSON-schema-constrained decoding / retry on invalid output
+  - Prefill `{"action": "` + stop at `}` + schema check (action, mark on screen, value rules); 2 sampled retries,
+    then `skip` with `fallback: true`. Not token-level constrained decoding.
 - [ ] Latency target < 2s/step on GPU (note CPU fallback speed honestly)
+  - GTX 1050 Ti fp32, 256M: ~4–5 s/step before the stop-at-`}` fix (re-measure). CPU: ~25 s/step.
 
 ## Phase 6 — App (Weeks 4–5)
 - [ ] `server/` Express + MongoDB: profiles, resumes/cover letters (GridFS), runs, corrections
