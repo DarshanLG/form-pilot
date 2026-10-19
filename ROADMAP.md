@@ -35,7 +35,8 @@ Target resume claims — **only keep a number once the eval in Phase 4/5 produce
 ## Phase 3 — Baseline (Week 2)
 - [x] `ml/eval.py` — action accuracy = action type + mark + value all correct (value: normalized exact match; free text: judged separately)
   - Reference: `always-skip` (no model) scores 44.2% overall / 63.2% ambiguous; every model must beat it. `--prefill` starts answers with `{"action": "`.
-- [ ] Zero-shot SmolVLM baseline on test split → record in `ml/RESULTS.md`
+- [x] Zero-shot SmolVLM baseline on test split → record in `ml/RESULTS.md`
+  - 256M + prefill: 2.3% overall / 1.7% ambiguous, 87.7% valid JSON, 4.8 s/example — far below `always-skip`.
 
 ## Phase 4 — LoRA fine-tune (Week 3)
 - [ ] `ml/train_lora.py` (PEFT + TRL SFT), r=16, target attn+MLP proj, bf16
