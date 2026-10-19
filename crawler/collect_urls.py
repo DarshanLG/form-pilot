@@ -14,6 +14,7 @@ from __future__ import annotations
 import argparse
 import json
 import time
+import urllib.error
 import urllib.request
 from pathlib import Path
 
@@ -29,9 +30,23 @@ def greenhouse(slug: str, n: int) -> list[str]:
     return [f"https://job-boards.greenhouse.io/{slug}/jobs/{j['id']}" for j in jobs[:n]]
 
 
+def is_live(url: str) -> bool:
+    req = urllib.request.Request(url, headers={"User-Agent": "FormPilot-research/0.1"})
+    try:
+        with urllib.request.urlopen(req, timeout=20) as r:
+            return r.status == 200
+    except urllib.error.HTTPError:
+        return False
+    finally:
+        time.sleep(1)
+
+
 def lever(slug: str, n: int) -> list[str]:
-    posts = fetch(f"https://api.lever.co/v0/postings/{slug}?mode=json&limit={n}")
-    return [p["hostedUrl"] for p in posts[:n]] if isinstance(posts, list) else []
+    # The postings API can list jobs whose hosted page already 404s; check a few extra.
+    posts = fetch(f"https://api.lever.co/v0/postings/{slug}?mode=json&limit={n + 3}")
+    if not isinstance(posts, list):
+        return []
+    return [u for u in (p["hostedUrl"] for p in posts) if is_live(u + "/apply")][:n]
 
 
 def main() -> None:

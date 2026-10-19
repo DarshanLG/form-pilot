@@ -1,12 +1,14 @@
 {
   "name": { "first": "Jane", "last": "Doe", "preferred": "Jane" },
+  "pronouns": "she/her",
   "email": "jane@example.com",
   "phone": "+1 555 555 0100",
   "location": { "city": "Long Beach", "state": "CA", "country": "United States", "zip": "90840" },
   "links": {
     "linkedin": "https://linkedin.com/in/janedoe",
     "github": "https://github.com/janedoe",
-    "portfolio": "https://janedoe.dev"
+    "portfolio": "https://janedoe.dev",
+    "twitter": ""
   },
   "education": [
     { "school": "California State University, Long Beach", "degree": "M.S.", "field": "Computer Science", "gpa": "3.7", "end": "2027-01" }
@@ -14,12 +16,15 @@
   "work": [
     { "company": "Example Corp", "title": "Software Engineer", "start": "2022-01", "end": "2024-12", "summary": "React front-end work." }
   ],
+  "languages": ["English"],
   "work_authorization": { "authorized_us": true, "needs_sponsorship": true },
-  "preferences": { "start_date": "2027-02", "relocate": true, "salary_expectation": "" },
-  "eeo": { "gender": "decline", "race": "decline", "veteran": "decline", "disability": "decline" },
+  "preferences": { "start_date": "2027-02", "relocate": true, "salary_expectation": "", "notice_period": "2 weeks" },
+  "eeo": { "gender": "decline", "race": "decline", "veteran": "decline", "disability": "decline", "hispanic": "decline", "lgbtq": "decline", "sexual_orientation": "decline", "age": "decline", "religion": "decline" },
+  "consent": { "marketing": false },
   "files": { "resume": "resume.pdf", "cover_letter": "cover_letter.pdf" },
   "answers": {
     "how_did_you_hear": "Company careers page",
+    "previously_employed_at": [],
     "why_this_company": ""
   }
 }
