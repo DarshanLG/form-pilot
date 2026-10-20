@@ -54,7 +54,10 @@ MONTHS = [
     "december",
 ]
 DEGREE_ALIAS = {"m.s.": "master", "m.sc.": "master", "b.s.": "bachelor", "b.a.": "bachelor", "ph.d.": "ph.d"}
-KEY_FALLBACK = {"answers.how_did_you_hear": r"careers?\s*(page|site)|company\s*web\s*site|\bwebsite\b"}
+# Matches a value *and* its options: only a careers-page answer may fall back to a careers-page option.
+KEY_FALLBACK = {
+    "answers.how_did_you_hear": r"^(?!.*third.party).*(careers?\s*(page|site)|company\s*web\s*site|\bwebsite\b)"
+}
 
 # --- synthetic profiles -----------------------------------------------------------------------
 
@@ -236,7 +239,8 @@ def match_option(value, options: list[str], key: str = "") -> str | None:
         hits = [o for o in opts if re.search(rf"(?<!\w){re.escape(n)}(?!\w)", norm(o))]
         if hits:
             return min(hits, key=len)
-        if key in KEY_FALLBACK and (hits := [o for o in opts if re.search(KEY_FALLBACK[key], norm(o))]):
+        fb = KEY_FALLBACK.get(key)
+        if fb and re.search(fb, n) and (hits := [o for o in opts if re.search(fb, norm(o))]):
             return min(hits, key=len)
     return None
 

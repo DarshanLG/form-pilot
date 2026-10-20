@@ -101,7 +101,9 @@ MARK_JS = r"""
       border:'2px solid #e11d48', zIndex:2147483647, pointerEvents:'none', boxSizing:'border-box'});
     const tag = document.createElement('div');
     tag.textContent = String(i + 1);
-    Object.assign(tag.style, {position:'absolute', left:'calc(100% + 4px)', top:'0', background:'#e11d48', color:'#fff',
+    // Radio/checkbox option text sits right of the box: put the number on the left so it stays readable.
+    const side = (f.type === 'radio' || f.type === 'checkbox') ? 'right' : 'left';
+    Object.assign(tag.style, {position:'absolute', [side]:'calc(100% + 4px)', top:'0', background:'#e11d48', color:'#fff',
       font:'bold 12px/16px monospace', padding:'0 4px', borderRadius:'3px'});
     box.appendChild(tag);
     document.body.appendChild(box);
