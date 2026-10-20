@@ -41,6 +41,8 @@ Target resume claims — **only keep a number once the eval in Phase 4/5 produce
 ## Phase 4 — LoRA fine-tune (Week 3)
 - [ ] `ml/train_lora.py` (PEFT + TRL SFT), r=16, target attn+MLP proj, bf16
   - Written; label masking verified (loss only on the answer JSON). fp32 on the GTX 1050 Ti (no bf16 on Pascal). Not yet run.
+  - Local 1050 Ti: ~7 s/example, ~11 h/epoch, OOMs when the desktop needs VRAM. Long runs go to Colab (T4, fp16):
+    `python ml/colab_bundle.py` → upload zip to Drive → `ml/colab.ipynb` → `--unpack` the result zip.
 - [ ] Train `no_cot` → eval on held-out layouts
 - [ ] Train `with_cot` → eval; report delta on `ambiguous` subset
 - [ ] Push adapter to Hugging Face Hub

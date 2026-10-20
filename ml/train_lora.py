@@ -72,7 +72,10 @@ def main() -> None:
     assert all(ex["split"] == "train" for ex in train)
 
     cap = torch.cuda.get_device_capability()[0] if torch.cuda.is_available() else 0
-    bf16 = cap >= 8  # Pascal (GTX 10xx) has neither bf16 nor usable fp16: train in fp32 there
+    bf16 = cap >= 8
+    fp16 = cap == 7  # Turing/Volta (Colab T4): fp32 weights + fp16 autocast. Pascal (GTX 10xx): fp32 only
+    vram = torch.cuda.get_device_properties(0).total_memory / 2**30 if cap else 0
+    grad_ckpt = vram < 12  # recomputing activations only pays off when memory is tight
     processor = AutoProcessor.from_pretrained(args.model)
     processor.image_processor.size = {"longest_edge": args.longest_edge}
     model = AutoModelForVision2Seq.from_pretrained(
@@ -90,7 +93,8 @@ def main() -> None:
         lr_scheduler_type="cosine",
         warmup_ratio=0.03,
         bf16=bf16,
-        gradient_checkpointing=True,
+        fp16=fp16,
+        gradient_checkpointing=grad_ckpt,
         gradient_checkpointing_kwargs={"use_reentrant": False},
         logging_steps=5,
         save_steps=100,
