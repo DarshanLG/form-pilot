@@ -39,3 +39,24 @@ Model `HuggingFaceTB/SmolVLM-256M-Instruct`, format `no_cot`, prefill, longest_e
 | action:type | 436 | 6.4% | 34.6% | 86.9% |
 | action:upload | 84 | 0.0% | 2.4% | 76.2% |
 | free_text | 14 | 0.0% | 57.1% | 92.9% |
+
+## lora-cot · test · 2026-10-20 · commit `1a5fade`
+
+Model `HuggingFaceTB/SmolVLM-256M-Instruct` + adapter `checkpoints/lora-cot`, format `with_cot`, prefill, longest_edge 1024, n=1544.
+
+| subset | n | action acc | action-type acc | valid JSON |
+|---|---:|---:|---:|---:|
+| overall | 1530 | 64.9% | 69.8% | 98.8% |
+| unambiguous | 729 | 63.6% | 67.8% | 99.2% |
+| ambiguous | 801 | 66.0% | 71.7% | 98.4% |
+| greenhouse | 730 | 52.9% | 60.1% | 98.9% |
+| lever | 800 | 75.9% | 78.6% | 98.6% |
+| action:click | 34 | 0.0% | 0.0% | 97.1% |
+| action:done | 61 | 0.0% | 0.0% | 98.4% |
+| action:select | 239 | 51.5% | 69.9% | 99.2% |
+| action:skip | 676 | 73.7% | 73.7% | 98.2% |
+| action:type | 436 | 78.4% | 85.6% | 99.3% |
+| action:upload | 84 | 35.7% | 35.7% | 100.0% |
+| free_text | 14 | 0.0% | 7.1% | 100.0% |
+
+Trained (1 epoch, 1 h 23 min) and predicted on Colab GPU via `ml/colab.ipynb` (5.07 s/example incl. CoT text), rescored locally with `--preds`.

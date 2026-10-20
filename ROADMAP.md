@@ -45,6 +45,8 @@ Target resume claims — **only keep a number once the eval in Phase 4/5 produce
     `python ml/colab_bundle.py` → upload zip to Drive → `ml/colab.ipynb` → `--unpack` the result zip.
 - [ ] Train `no_cot` → eval on held-out layouts
 - [ ] Train `with_cot` → eval; report delta on `ambiguous` subset
+  - `lora-cot` (Colab): 64.9% overall / 66.0% ambiguous vs always-skip 44.2% / 63.2%. click and done 0%, upload 35.7%.
+    Delta needs `lora-nocot`; the local no_cot run OOMed twice (partial in `checkpoints/lora-nocot-local-partial`).
 - [ ] Push adapter to Hugging Face Hub
 - **Done when:** RESULTS.md has baseline vs LoRA vs LoRA+CoT, overall + per platform + ambiguous
 
