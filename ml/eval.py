@@ -118,7 +118,9 @@ def log(args, m: dict, n: int, secs_per_ex: float | None) -> None:
         f"\n## {args.name} · {args.split} · {date.today().isoformat()} · commit `{git_rev()}`\n\n"
         f"Model `{args.model}`"
         + (f" + adapter `{args.adapter}`" if args.adapter else "")
-        + f", format `{'with_cot' if args.cot else 'no_cot'}`, {'prefill, ' if args.prefill else ''}longest_edge {args.longest_edge}, n={n}{speed}.\n\n"
+        + f", format `{'with_cot' if args.cot else 'no_cot'}`, {'prefill, ' if args.prefill else ''}longest_edge {args.longest_edge}, n={n}{speed}"
+        + ("" if Path(args.data) == Path("data/dataset") else f", data `{Path(args.data).as_posix()}`")
+        + ".\n\n"
     )
     with RESULTS.open("a", encoding="utf-8") as fh:
         fh.write(head + report(m) + "\n")

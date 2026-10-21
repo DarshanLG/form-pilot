@@ -3,6 +3,7 @@
 Usage:
     python ml/colab_bundle.py                                   # code + dataset
     python ml/colab_bundle.py --adapter checkpoints/lora-nocot  # also ship a trained adapter to eval
+    python ml/colab_bundle.py --data data/dataset_v2            # another dataset build (lands as data/dataset)
 
 Upload data/colab/formpilot_colab.zip to "My Drive/formpilot/". Code travels as a git bundle of HEAD, so
 the commit hash survives and no push is needed: commit first. Only the marked screenshots the dataset
@@ -27,7 +28,7 @@ def git(*args: str) -> str:
     return subprocess.run(["git", *args], cwd=ROOT, check=True, capture_output=True, text=True).stdout
 
 
-def pack(adapter: str | None) -> None:
+def pack(adapter: str | None, data: str) -> None:
     if git("status", "--porcelain", "--untracked-files=no").strip():
         sys.exit("working tree has uncommitted changes: commit first so Colab runs a real commit")
     OUT.mkdir(parents=True, exist_ok=True)
@@ -36,14 +37,14 @@ def pack(adapter: str | None) -> None:
 
     images: set[str] = set()
     for split in SPLITS:
-        with open(ROOT / "data" / "dataset" / f"{split}.jsonl", encoding="utf-8") as fh:
+        with open(ROOT / data / f"{split}.jsonl", encoding="utf-8") as fh:
             images.update(json.loads(line)["image"] for line in fh)
 
     dest = OUT / "formpilot_colab.zip"
     with zipfile.ZipFile(dest, "w", zipfile.ZIP_STORED) as z:  # PNGs and the bundle are already compressed
         z.write(bundle, "repo.bundle")
         for split in SPLITS:
-            z.write(ROOT / "data" / "dataset" / f"{split}.jsonl", f"data/dataset/{split}.jsonl")
+            z.write(ROOT / data / f"{split}.jsonl", f"data/dataset/{split}.jsonl")  # notebook default path
         for img in sorted(images):
             z.write(ROOT / img, img)
         if adapter:
@@ -66,9 +67,10 @@ def unpack(path: str) -> None:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--adapter", help="also include this trained adapter dir (to eval it on Colab)")
+    ap.add_argument("--data", default="data/dataset", help="dataset dir to ship (its screenshots come along)")
     ap.add_argument("--unpack", help="extract a formpilot_out_<name>.zip from Colab into the repo")
     args = ap.parse_args()
-    unpack(args.unpack) if args.unpack else pack(args.adapter)
+    unpack(args.unpack) if args.unpack else pack(args.adapter, args.data)
 
 
 if __name__ == "__main__":
