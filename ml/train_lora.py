@@ -14,6 +14,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from collections import Counter
 from pathlib import Path
 
 import torch
@@ -24,6 +25,7 @@ from trl import SFTConfig, SFTTrainer
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from ml.prompt import load_image, messages, render_target
 
+ACTIONS = ("type", "select", "click", "upload", "skip", "done")
 TEXT_PROJ = r".*text_model.*\.(q_proj|k_proj|v_proj|o_proj|gate_proj|up_proj|down_proj)"
 
 
@@ -53,6 +55,33 @@ class Collator:
         return enc
 
 
+def parse_oversample(spec: str) -> dict[str, int]:
+    """Parse e.g. click=5,done=4 into {"click": 5, "done": 4}."""
+    out = {}
+    for part in filter(None, spec.split(",")):
+        action, _, n = part.partition("=")
+        if action not in ACTIONS or not n.isdigit() or int(n) < 1:
+            raise argparse.ArgumentTypeError(
+                f"bad --oversample entry {part!r}: want <action>=<count>, count >= 1"
+            )
+        out[action] = int(n)
+    return out
+
+
+def oversample(train: list[dict], factors: dict[str, int]) -> list[dict]:
+    """The model learned "radio/checkbox -> skip" because click is ~3% of train (done ~4%): repeat those
+    examples. The trainer's sampler shuffles, so copies are spread over the epoch."""
+    if not factors:
+        return train
+    out = [ex for ex in train for _ in range(factors.get(ex["target"]["action"], 1))]
+    before, after = (
+        Counter(ex["target"]["action"] for ex in train),
+        Counter(ex["target"]["action"] for ex in out),
+    )
+    print("oversample:", {a: f"{before[a]}->{after[a]}" for a in factors}, f"total {len(train)}->{len(out)}")
+    return out
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--name", required=True, help="adapter goes to checkpoints/<name>")
@@ -65,11 +94,18 @@ def main() -> None:
     ap.add_argument("--grad-accum", type=int, default=16)
     ap.add_argument("--longest-edge", type=int, default=1024, help="must match ml/eval.py")
     ap.add_argument("--max-steps", type=int, default=-1, help="smoke tests")
+    ap.add_argument(
+        "--oversample",
+        type=parse_oversample,
+        default={},
+        help="repeat rare target actions, e.g. click=5,done=4 (each such example appears N times per epoch)",
+    )
     args = ap.parse_args()
 
     with open(Path(args.data) / "train.jsonl", encoding="utf-8") as fh:
         train = [json.loads(line) for line in fh]
     assert all(ex["split"] == "train" for ex in train)
+    train = oversample(train, args.oversample)
 
     cap = torch.cuda.get_device_capability()[0] if torch.cuda.is_available() else 0
     bf16 = cap >= 8
