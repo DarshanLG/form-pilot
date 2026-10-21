@@ -65,15 +65,18 @@ Target resume claims — **only keep a number once the eval in Phase 4/5 produce
   - `/api/profile`, `/api/files/:kind`, `/api/runs` (+ `/:id/steps`, `/:id/finish`), `/api/corrections[/export]`,
     `/api/stats` (acceptance rate per day), `/api/act` (proxy to the model server with the stored profile).
     Edited/overridden steps become corrections with their screenshot; export is NDJSON for Phase 7.
-- [ ] `extension/` Chrome MV3 + React side panel (built; not yet run end-to-end in Chrome with the model):
+- [x] `extension/` Chrome MV3 + React side panel (tested end to end on a live Lever form with `lora-cot`)
   - `cd extension && npm run build` → chrome://extensions → Load unpacked → `extension/dist`. `npm test` (jsdom).
   - Marking mirrors `crawler/capture.py` (same 18 marks/labels as the crawl on a live Lever form) with v2
     left-side radio/checkbox numbers: retrain on `data/dataset_v2` before relying on clicks.
-  - capture tab screenshot, inject marks, call API, execute action, show live step log
-  - Accept / Edit / Skip per action → edits saved as corrections
-  - resume/cover letter upload into file inputs
-  - **Confirm-before-submit** gate
-- [ ] `web/` React dashboard: profile editor, application history, accuracy over time
+  - [x] capture tab screenshot, inject marks, call API, execute action, show live step log
+    (autocomplete fields pick a suggestion; a clicked radio auto-skips its siblings)
+  - [x] Accept / Edit / Skip per action → edits saved as corrections (no-op edits count as accepts)
+  - [x] resume/cover letter upload into file inputs
+  - [x] **Confirm-before-submit** gate
+- [x] `web/` React dashboard: profile editor, application history, accuracy over time
+  - `cd web && npm run dev` → http://127.0.0.1:5173 (proxies `/api` to the server). `npm test`.
+  - Overview (acceptance rate per day, corrections export), Profile (form or raw JSON), Documents, Runs (steps).
 
 ## Phase 7 — Feedback loop (Week 6)
 - [ ] Export corrections → append to train set → retrain → compare on the same frozen test split
