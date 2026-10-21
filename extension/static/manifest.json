@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "FormPilot",
+  "version": "0.1.0",
+  "description": "Fills job applications from your profile, one reviewable step at a time. Never submits without your confirmation.",
+  "minimum_chrome_version": "116",
+  "action": { "default_title": "Open FormPilot" },
+  "side_panel": { "default_path": "panel.html" },
+  "background": { "service_worker": "background.js" },
+  "permissions": ["sidePanel", "scripting", "storage", "activeTab", "tabs"],
+  "host_permissions": ["<all_urls>"]
+}

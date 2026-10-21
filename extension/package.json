@@ -1,0 +1,26 @@
+{
+  "name": "formpilot-extension",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "FormPilot Chrome MV3 extension: side panel that fills job applications step by step",
+  "scripts": {
+    "build": "node build.mjs",
+    "watch": "node build.mjs --watch",
+    "typecheck": "tsc -p . --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@types/chrome": "0.0.287",
+    "@types/react": "18.3.18",
+    "@types/react-dom": "18.3.5",
+    "esbuild": "0.24.2",
+    "jsdom": "25.0.1",
+    "typescript": "5.7.2",
+    "vitest": "2.1.8"
+  }
+}

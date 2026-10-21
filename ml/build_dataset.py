@@ -262,7 +262,12 @@ def target_for(row: dict, p: dict) -> tuple[dict, str, bool]:
     m, key, q = row["mark"], row["profile_key"], question(row)
     skip = {"action": "skip", "mark": m, "value": None}
     if row["field_type"] == "file":
-        which = "cover_letter" if key == "files.cover_letter" else "resume"
+        if key == "files.cover_letter" or re.search(r"cover\s*letter", q.lower()):
+            which = "cover_letter"
+        elif re.search(r"resume|résumé|\bcv\b", q.lower()):
+            which = "resume"
+        else:  # writing sample, portfolio, transcript...: no matching document in the profile
+            return skip, f'Mark {m} asks for "{q}"; the profile has no such file, so skip.', True
         if not p["files"].get(which):
             return (
                 skip,
@@ -449,7 +454,7 @@ def main() -> None:
                 "platform": rows[0]["platform"],
                 "split": s,
                 "image": image.as_posix(),
-                "crop": examples[-1]["crop"],
+                "crop": crop_for([0, img_h, 0, 0], img_h, width),  # form bottom (Submit), not a field
                 "profile_id": pid,
                 "profile": profile,
                 "history": list(history),

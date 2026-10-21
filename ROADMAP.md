@@ -60,8 +60,15 @@ Target resume claims — **only keep a number once the eval in Phase 4/5 produce
   - GTX 1050 Ti fp32, 256M: ~4–5 s/step before the stop-at-`}` fix (re-measure). CPU: ~25 s/step.
 
 ## Phase 6 — App (Weeks 4–5)
-- [ ] `server/` Express + MongoDB: profiles, resumes/cover letters (GridFS), runs, corrections
-- [ ] `extension/` Chrome MV3 + React side panel:
+- [x] `server/` Express + MongoDB: profiles, resumes/cover letters (GridFS), runs, corrections
+  - `cd server && npm start` → http://127.0.0.1:4000 (env `MONGO_URL`, `INFERENCE_URL`). `npm test` needs a local mongod.
+  - `/api/profile`, `/api/files/:kind`, `/api/runs` (+ `/:id/steps`, `/:id/finish`), `/api/corrections[/export]`,
+    `/api/stats` (acceptance rate per day), `/api/act` (proxy to the model server with the stored profile).
+    Edited/overridden steps become corrections with their screenshot; export is NDJSON for Phase 7.
+- [ ] `extension/` Chrome MV3 + React side panel (built; not yet run end-to-end in Chrome with the model):
+  - `cd extension && npm run build` → chrome://extensions → Load unpacked → `extension/dist`. `npm test` (jsdom).
+  - Marking mirrors `crawler/capture.py` (same 18 marks/labels as the crawl on a live Lever form) with v2
+    left-side radio/checkbox numbers: retrain on `data/dataset_v2` before relying on clicks.
   - capture tab screenshot, inject marks, call API, execute action, show live step log
   - Accept / Edit / Skip per action → edits saved as corrections
   - resume/cover letter upload into file inputs
