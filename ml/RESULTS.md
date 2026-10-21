@@ -60,3 +60,43 @@ Model `HuggingFaceTB/SmolVLM-256M-Instruct` + adapter `checkpoints/lora-cot`, fo
 | free_text | 14 | 0.0% | 7.1% | 100.0% |
 
 Trained (1 epoch, 1 h 23 min) and predicted on Colab GPU via `ml/colab.ipynb` (5.07 s/example incl. CoT text), rescored locally with `--preds`.
+
+## lora-cot-v2 · test · 2026-10-20 · commit `6a6212f`
+
+Model `HuggingFaceTB/SmolVLM-256M-Instruct` + adapter `checkpoints/lora-cot-v2`, format `with_cot`, prefill, longest_edge 1024, n=1544, data `data/dataset_v2`.
+
+| subset | n | action acc | action-type acc | valid JSON |
+|---|---:|---:|---:|---:|
+| overall | 1530 | 66.0% | 71.5% | 99.3% |
+| unambiguous | 729 | 63.9% | 69.8% | 99.3% |
+| ambiguous | 801 | 67.9% | 73.0% | 99.3% |
+| greenhouse | 730 | 55.3% | 63.0% | 98.9% |
+| lever | 800 | 75.8% | 79.2% | 99.6% |
+| action:click | 30 | 6.7% | 6.7% | 100.0% |
+| action:done | 61 | 1.6% | 1.6% | 96.7% |
+| action:select | 236 | 54.7% | 72.5% | 98.7% |
+| action:skip | 686 | 74.3% | 74.3% | 99.4% |
+| action:type | 436 | 76.4% | 86.0% | 99.5% |
+| action:upload | 81 | 43.2% | 43.2% | 100.0% |
+| free_text | 14 | 7.1% | 7.1% | 100.0% |
+
+Trained (1 epoch) and predicted on Colab GPU via `ml/colab.ipynb` from the dataset v2 bundle (Colab run name `lora-co-v2`), rescored locally with `--preds`.
+
+## always-skip-v2 · test · 2026-10-20 · commit `6a6212f-dirty`
+
+Model `always-skip`, format `no_cot`, longest_edge 1024, n=1544, 0.00 s/example, data `data/dataset_v2`.
+
+| subset | n | action acc | action-type acc | valid JSON |
+|---|---:|---:|---:|---:|
+| overall | 1530 | 44.8% | 44.8% | 100.0% |
+| unambiguous | 729 | 23.7% | 23.7% | 100.0% |
+| ambiguous | 801 | 64.0% | 64.0% | 100.0% |
+| greenhouse | 730 | 35.1% | 35.1% | 100.0% |
+| lever | 800 | 53.8% | 53.8% | 100.0% |
+| action:click | 30 | 0.0% | 0.0% | 100.0% |
+| action:done | 61 | 0.0% | 0.0% | 100.0% |
+| action:select | 236 | 0.0% | 0.0% | 100.0% |
+| action:skip | 686 | 100.0% | 100.0% | 100.0% |
+| action:type | 436 | 0.0% | 0.0% | 100.0% |
+| action:upload | 81 | 0.0% | 0.0% | 100.0% |
+| free_text | 14 | 0.0% | 0.0% | 100.0% |
